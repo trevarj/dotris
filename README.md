@@ -38,8 +38,7 @@ Every 10 lines cleared the speed of the falling piece increases by 25% and the g
 
 ```
 git clone https://github.com/trevarj/dotris && cd dotris
-meson setup ./build .
-meson configure -Dbuildtype=release
+meson setup ./build . --buildtype=release
 cd build
 meson compile
 ```
