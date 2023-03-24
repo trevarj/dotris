@@ -1,6 +1,8 @@
-# ⣼⢠⡄⢤⠄⡤⢠⢀⡤ (dotris)
+# `⣼⢠⡄⢤⠄⡤⢠⢀⡤`
 
-Mini ⠲⠂ Tetris made with dots
+Mini Tetris made with dots
+
+![gameplay](./dotris.gif)
 
 ## How To Play
 
@@ -30,7 +32,7 @@ If the piece used to clear was hard dropped you get 1 point per row added to the
 
 ### Levels
 
-Every 10 lines cleared the speed of the falling piece increases by 25%.
+Every 10 lines cleared the speed of the falling piece increases by 25% and the grid is wiped.
 
 ## Building
 
