@@ -236,7 +236,7 @@ Tetrimino make_tetrimino(TetriminoType type) {
 // Makes a random Tetrimino
 Tetrimino random_tetrimino(void) { return make_tetrimino((TetriminoType)rand() % 7); }
 
-inline int is_valid_transformation(const char (*state)[4][4], int x, int y) {
+int is_valid_transformation(const char (*state)[4][4], int x, int y) {
     for (int i = 0; i < 4; i++) {
         int rel_y = y + i;
         for (int j = 0; j < 4; j++) {
@@ -277,9 +277,7 @@ MoveResult move_tetrimino(Tetrimino *t, Direction d) {
     return res;
 }
 
-inline TetriminoState next_state(TetriminoState state) {
-    return (state == Fourth) ? First : state + 1;
-}
+TetriminoState next_state(TetriminoState state) { return (state == Fourth) ? First : state + 1; }
 
 // Alters the state of the tetrimino if possible. Rotates clockwise.
 void rotate_tetrimino(Tetrimino *t) {
