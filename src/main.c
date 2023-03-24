@@ -52,7 +52,7 @@ int calculate_score(int cleared, int drop_rows) {
     return score;
 }
 
-// Increase drop speed by 20% every 10 lines cleared
+// Increase drop speed by 25% every 10 lines cleared
 void level_freq(double *freq, int cleared) {
     if (cleared && cleared % 10 == 0) {
         *freq *= .75;

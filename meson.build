@@ -6,10 +6,11 @@ if get_option('buildtype') == 'debugoptimized'
   add_global_arguments('-DDEBUG', language : 'c')
 endif
 
-src = ['main.c', 'tetriminos.c', 'grid.c']
+src = ['src/main.c', 'src/tetriminos.c', 'src/grid.c']
 ncurses = dependency('ncursesw')
+inc = include_directories('./include')
 executable('dotris',
            src,
            dependencies : ncurses,
+           include_directories : inc,
            install : false)
-
