@@ -5,7 +5,7 @@
 
 // clang-format off
 
-char const I_STATES[4][4][4] = {
+uint8_t const I_STATES[4][4][4] = {
   {
     {0, 0, 1, 0},
     {0, 0, 1, 0},
@@ -32,7 +32,7 @@ char const I_STATES[4][4][4] = {
   },
 };
 
-char const J_STATES[4][4][4] = {
+uint8_t const J_STATES[4][4][4] = {
   {
     {0, 0, 0, 0},
     {0, 0, 0, 0},
@@ -59,7 +59,7 @@ char const J_STATES[4][4][4] = {
   },
 };
 
-char const L_STATES[4][4][4] = {
+uint8_t const L_STATES[4][4][4] = {
   {
     {0, 0, 0, 0},
     {0, 0, 0, 0},
@@ -86,7 +86,7 @@ char const L_STATES[4][4][4] = {
   },
 };
 
-char const O_STATES[4][4][4] = {
+uint8_t const O_STATES[4][4][4] = {
   {
     {0, 0, 0, 0},
     {0, 1, 1, 0},
@@ -113,7 +113,7 @@ char const O_STATES[4][4][4] = {
   },
 };
 
-char const S_STATES[4][4][4] = {
+uint8_t const S_STATES[4][4][4] = {
   {
     {0, 0, 0, 0},
     {0, 0, 0, 0},
@@ -140,7 +140,7 @@ char const S_STATES[4][4][4] = {
   },
 };
 
-char const T_STATES[4][4][4] = {
+uint8_t const T_STATES[4][4][4] = {
   {
     {0, 0, 0, 0},
     {0, 0, 0, 0},
@@ -167,7 +167,7 @@ char const T_STATES[4][4][4] = {
   },
 };
 
-char const Z_STATES[4][4][4] = {
+uint8_t const Z_STATES[4][4][4] = {
   {
     {0, 0, 0, 0},
     {0, 0, 0, 0},
@@ -196,14 +196,14 @@ char const Z_STATES[4][4][4] = {
 
 // clang-format on
 
-extern char GRID[GRID_HEIGHT][GRID_WIDTH];
+extern uint8_t GRID[GRID_HEIGHT][GRID_WIDTH];
 
 // Makes a new Tetrimino in the default position.
 Tetrimino make_tetrimino(TetriminoType type) {
     Tetrimino new;
     new.type = type;
     new.state = First;
-    const char(*c)[4][4][4] = NULL;
+    const uint8_t(*c)[4][4][4] = NULL;
     switch (type) {
     case I:
         c = &I_STATES;
@@ -236,7 +236,7 @@ Tetrimino make_tetrimino(TetriminoType type) {
 // Makes a random Tetrimino
 Tetrimino random_tetrimino(void) { return make_tetrimino((TetriminoType)rand() % 7); }
 
-int is_valid_transformation(const char (*state)[4][4], int x, int y) {
+int is_valid_transformation(const uint8_t (*state)[4][4], int x, int y) {
     for (int i = 0; i < 4; i++) {
         int rel_y = y + i;
         for (int j = 0; j < 4; j++) {

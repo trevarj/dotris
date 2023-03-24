@@ -10,7 +10,7 @@
 #define LINES_PER_LEVEL 10
 #define STARTING_FREQ 1500 // 1.5 seconds
 
-extern char GRID[GRID_HEIGHT][GRID_WIDTH]; // defined in grid.c
+extern uint8_t GRID[GRID_HEIGHT][GRID_WIDTH]; // defined in grid.c
 
 void setup(void) {
     setlocale(LC_ALL, "");

@@ -5,7 +5,7 @@
 
 #define MVPRINTW(Y, X, STR) mvprintw(Y, X, "%s", STR)
 
-char GRID[GRID_HEIGHT][GRID_WIDTH]; // The 10 x 22 gameboard
+uint8_t GRID[GRID_HEIGHT][GRID_WIDTH]; // The 10 x 22 gameboard
 
 void print_grid(void) {
 #ifndef DEBUG

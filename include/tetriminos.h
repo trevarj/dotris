@@ -1,3 +1,5 @@
+#include "stdint.h"
+
 typedef enum TetriminoType { I, J, L, O, S, T, Z } TetriminoType;
 
 typedef enum TetriminoState {
@@ -23,7 +25,7 @@ typedef struct Tetrimino {
     // index into the current coordinates/rotation
     enum TetriminoState state;
     // pointer to list of states
-    const char (*states)[4][4][4];
+    const uint8_t (*states)[4][4][4];
     // current position in grid, x is the column and y is the row
     int x, y;
 } Tetrimino;
