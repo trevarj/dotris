@@ -50,6 +50,7 @@ gcc -lncursesw -Iinclude/ src/main.c src/tetriminos.c src/grid.c -o dotris
 ```
 
 ### Meson (Clang)
+```
 meson setup ./build . --buildtype=release
 cd build
 meson compile
