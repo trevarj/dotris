@@ -13,7 +13,7 @@ Key           | Description
 `Up Arrow`    | Rotate clockwise
 `Down Arrow`  | Soft drop (move down)
 `Spacebar`    | Hard drop
-'C'           | Hold Tetrimino / Restore Held
+`C`           | Hold Tetrimino / Restore Held
 `Q`           | Quit game
 
 ## Mechanics
