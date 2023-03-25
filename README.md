@@ -31,7 +31,7 @@ Lines      | Points
 
 If the piece used to clear was hard dropped you get 1 point per row added to the point amount.
 
-Each level acts as a multiplier to the above table. i.e on level two, clearing one line is 80;
+Each level acts as a multiplier to the above table; i.e on level two, clearing one line is 80.
 
 ### Levels
 
