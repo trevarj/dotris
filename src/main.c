@@ -30,35 +30,36 @@ void setup(void) {
     noecho();             // Don't echo() while we do getch
 }
 
-// BPS scoring system
+// Based on BPS scoring system
 // https://tetris.wiki/Tetris_(BPS)
-int calculate_score(int cleared, int drop_rows) {
-    int score = 0;
+int calculate_points(int cleared, int drop_rows, int level) {
+    int points = 0;
     switch (cleared) {
     case 1:
-        score += 40;
+        points = 40;
         break;
     case 2:
-        score += 100;
+        points = 100;
         break;
     case 3:
-        score += 300;
+        points = 300;
         break;
     case 4:
-        score += 1200;
+        points = 1200;
         break;
     }
+    points *= level;
     if (cleared > 0) {
-        score += drop_rows;
+        points += drop_rows;
     }
-    return score;
+    return points;
 }
 
-// Increase drop speed by 20% every 10 lines cleared
+// Increase drop speed by 40% every 10 lines cleared
 void level_freq(double *freq, int *lines_left) {
     if (*lines_left <= 0) {
-        *freq *= .8;
-        memset(GRID, 0, sizeof(GRID[0][0]) * GRID_WIDTH * GRID_HEIGHT);
+        *freq *= .6;
+        memset(GRID, 0, sizeof(GRID));
         *lines_left = LINES_PER_LEVEL;
     }
 }
@@ -118,7 +119,8 @@ int main(void) {
             // check and clear lines
             int cleared = clear_lines();
             if (cleared) {
-                score += calculate_score(cleared, drop_rows);
+                int level = total_cleared / LINES_PER_LEVEL;
+                score += calculate_points(cleared, drop_rows, level);
                 total_cleared += cleared;
                 lines_left -= cleared;
                 level_freq(&tick_freq, &lines_left);
