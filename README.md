@@ -38,6 +38,15 @@ Every 10 lines cleared the speed of the falling piece increases by 20% and the g
 
 ```
 git clone https://github.com/trevarj/dotris && cd dotris
+```
+
+### GCC
+
+```
+gcc -lncursesw -Iinclude/ src/main.c src/tetriminos.c src/grid.c -o dotris
+```
+
+### Meson (Clang)
 meson setup ./build . --buildtype=release
 cd build
 meson compile
