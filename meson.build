@@ -13,4 +13,4 @@ executable('dotris',
            src,
            dependencies : ncurses,
            include_directories : inc,
-           install : false)
+           install : true)
