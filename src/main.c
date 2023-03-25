@@ -71,6 +71,7 @@ int main(void) {
     int input;
     int64_t ticker = 0;
     Tetrimino t = random_tetrimino();
+    int held = -1;
     int total_cleared = 0;
     int lines_left = LINES_PER_LEVEL;
     double tick_freq = STARTING_FREQ;
@@ -107,6 +108,15 @@ int main(void) {
         case KEY_SPACE:
             drop_rows = drop_tetrimino(&t);
             move_res = FailedV;
+            break;
+        case 'c':
+            if (held != -1) {
+                t = make_tetrimino((TetriminoType)held);
+                held = -1;
+            } else {
+                held = (int)t.type;
+                t = random_tetrimino();
+            }
             break;
         case 'q':
             quit = true;
