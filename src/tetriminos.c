@@ -1,7 +1,8 @@
-#include <curses.h>
-#include <stdio.h>
 #include <stdlib.h>
-#include <tetriminos.h>
+
+#include <curses.h>
+
+#include "tetriminos.h"
 
 // clang-format off
 

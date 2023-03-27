@@ -1,10 +1,12 @@
-#include <curses.h>
-#include <grid.h>
-#include <locale.h>
 #include <stdio.h>
 #include <stdlib.h>
+
+#include <curses.h>
+#include <locale.h>
 #include <string.h>
 #include <time.h>
+
+#include "grid.h"
 
 #define KEY_SPACE ' '
 #define KEY_C 'c'

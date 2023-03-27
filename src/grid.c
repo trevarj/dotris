@@ -1,7 +1,8 @@
 #include <curses.h>
-#include <dots.h>
-#include <grid.h>
 #include <string.h>
+
+#include "dots.h"
+#include "grid.h"
 
 #define MVPRINTW(Y, X, STR) mvprintw(Y, X, "%s", STR)
 

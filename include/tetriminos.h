@@ -1,4 +1,4 @@
-#include "stdint.h"
+#include <stdint.h>
 
 typedef enum TetriminoType { I, J, L, O, S, T, Z } TetriminoType;
 
