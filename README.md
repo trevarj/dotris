@@ -61,6 +61,8 @@ sudo meson install
 ### GNU Make
 ```
 make
+# or
+# sudo make install
 ```
 
 Now you can run the `dotris` binary

@@ -8,3 +8,6 @@ dotris: $(SOURCES)
 
 clean: dotris
 	rm dotris
+
+install: dotris
+	mv dotris /usr/local/bin/dotris
