@@ -15,9 +15,9 @@ typedef enum MoveResult {
     // Moved successfully
     Success,
     // Couldn't move horizontally
-    FailedH,
+    HitSide,
     // Failed vertically and should be locked into GRID
-    FailedV,
+    HitBottom,
 } MoveResult;
 
 typedef struct Tetrimino {
@@ -33,20 +33,7 @@ typedef struct Tetrimino {
 // Makes a new Tetrimino in the default position.
 Tetrimino make_tetrimino(TetriminoType type);
 
+TetriminoState next_state(TetriminoState state);
+
 // Makes a random Tetrimino
 Tetrimino random_tetrimino(void);
-
-// Move piece left, right or down
-MoveResult move_tetrimino(Tetrimino *t, Direction d);
-
-// Alters the state of the tetrimino if possible. Rotates clockwise.
-void rotate_tetrimino(Tetrimino *t);
-
-// Hard drop and return rows covered
-int drop_tetrimino(Tetrimino *t);
-
-// Locks Tetrimino into GRID
-void write_to_grid(Tetrimino *t);
-
-// Removes Tetrimino from GRID
-void remove_from_grid(Tetrimino *t);

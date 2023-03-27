@@ -7,10 +7,10 @@
 #include <time.h>
 
 #define KEY_SPACE ' '
+#define KEY_C 'c'
+#define KEY_Q 'q'
 #define LINES_PER_LEVEL 10
 #define STARTING_FREQ 1500 // 1.5 seconds
-
-extern uint8_t GRID[GRID_HEIGHT][GRID_WIDTH]; // defined in grid.c
 
 void setup(void) {
     setlocale(LC_ALL, "");
@@ -59,38 +59,43 @@ int calculate_points(int cleared, int drop_rows, int level) {
 void level_freq(double *freq, int *lines_left) {
     if (*lines_left <= 0) {
         *freq *= .6;
-        memset(GRID, 0, sizeof(GRID));
+        clear_grid();
         *lines_left = LINES_PER_LEVEL;
     }
 }
 
 int main(void) {
+    bool quit = false;
+    double tick_freq = STARTING_FREQ;
+    int held = -1;
+    int input;
+    int lines_left = LINES_PER_LEVEL;
+    int score = 0;
+    int total_cleared = 0;
+    int64_t ticker = 0;
+
     setup();
     draw_border();
-    bool quit = false;
-    int input;
-    int64_t ticker = 0;
+
     Tetrimino t = random_tetrimino();
-    int held = -1;
-    int total_cleared = 0;
-    int lines_left = LINES_PER_LEVEL;
-    double tick_freq = STARTING_FREQ;
-    int score = 0;
+
     while (!quit) {
         MoveResult move_res = Success;
         int drop_rows = 0;
         struct timespec now;
+
         clock_gettime(CLOCK_REALTIME, &now);
         int64_t now_ms = now.tv_sec * INT64_C(1000) + now.tv_nsec / 1000000;
+
         if (now_ms - ticker >= tick_freq) {
             ticker = now_ms;
             move_res = move_tetrimino(&t, Down);
         }
-        if (move_res == FailedV && t.y <= 0) {
-            // GAME OVER!
+        if (move_res == HitBottom && t.y <= 0) {
             printf("Game Over! ");
             break;
         }
+
         input = getch();
         switch (input) {
         case KEY_LEFT:
@@ -107,9 +112,9 @@ int main(void) {
             break;
         case KEY_SPACE:
             drop_rows = drop_tetrimino(&t);
-            move_res = FailedV;
+            move_res = HitBottom;
             break;
-        case 'c':
+        case KEY_C:
             if (held != -1) {
                 t = make_tetrimino((TetriminoType)held);
                 held = -1;
@@ -118,15 +123,13 @@ int main(void) {
                 t = random_tetrimino();
             }
             break;
-        case 'q':
+        case KEY_Q:
             quit = true;
             break;
         }
 
-        if (move_res == FailedV) {
-            // lock piece
+        if (move_res == HitBottom) {
             write_to_grid(&t);
-            // check and clear lines
             int cleared = clear_lines();
             if (cleared) {
                 int level = total_cleared / LINES_PER_LEVEL;
@@ -135,7 +138,6 @@ int main(void) {
                 lines_left -= cleared;
                 level_freq(&tick_freq, &lines_left);
             }
-            // next piece
             t = random_tetrimino();
         }
 

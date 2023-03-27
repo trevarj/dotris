@@ -27,4 +27,15 @@
 void draw_border(void);
 void draw_grid(Tetrimino *t);
 
+// Move piece left, right or down
+MoveResult move_tetrimino(Tetrimino *t, Direction d);
+// Alters the state of the tetrimino if possible. Rotates clockwise.
+void rotate_tetrimino(Tetrimino *t);
+// Hard drop and return rows covered
+int drop_tetrimino(Tetrimino *t);
+
+void write_to_grid(Tetrimino *t);
+void remove_from_grid(Tetrimino *t);
+
 int clear_lines(void);
+void clear_grid(void);
