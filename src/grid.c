@@ -89,25 +89,25 @@ inline void write_to_grid(Tetrimino *t) {
 
 MoveResult move_tetrimino(Tetrimino *t, Direction d) {
     int temp_x = t->x, temp_y = t->y;
-    MoveResult res = Success;
+    MoveResult res = MOVE_SUCCESS;
     switch (d) {
-    case Left:
+    case MOVE_LEFT:
         temp_x -= 1;
-        res = HitSide;
+        res = MOVE_HIT_SIDE;
         break;
-    case Right:
+    case MOVE_RIGHT:
         temp_x += 1;
-        res = HitSide;
+        res = MOVE_HIT_SIDE;
         break;
-    case Down:
+    case MOVE_DOWN:
         temp_y += 1;
-        res = HitBottom;
+        res = MOVE_HIT_BOTTOM;
         break;
     }
     if (is_valid_transformation(&(*t->states)[t->state], temp_x, temp_y)) {
         t->x = temp_x;
         t->y = temp_y;
-        return Success;
+        return MOVE_SUCCESS;
     }
     return res;
 }
@@ -122,10 +122,10 @@ void rotate_tetrimino(Tetrimino *t) {
 
 // Hard drop and return rows covered
 int drop_tetrimino(Tetrimino *t) {
-    MoveResult res = Success;
+    MoveResult res = MOVE_SUCCESS;
     int rows = 0;
-    while (res != HitBottom) {
-        res = move_tetrimino(t, Down);
+    while (res != MOVE_HIT_BOTTOM) {
+        res = move_tetrimino(t, MOVE_DOWN);
         rows++;
     }
     return rows;

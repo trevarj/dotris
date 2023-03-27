@@ -3,21 +3,21 @@
 typedef enum TetriminoType { I, J, L, O, S, T, Z } TetriminoType;
 
 typedef enum TetriminoState {
-    First,
-    Second,
-    Third,
-    Fourth,
+    FIRST_STATE,
+    SECOND_STATE,
+    THIRD_STATE,
+    FOURTH_STATE,
 } TetriminoState;
 
-typedef enum Direction { Left, Right, Down } Direction;
+typedef enum Direction { MOVE_LEFT, MOVE_RIGHT, MOVE_DOWN } Direction;
 
 typedef enum MoveResult {
     // Moved successfully
-    Success,
+    MOVE_SUCCESS,
     // Couldn't move horizontally
-    HitSide,
+    MOVE_HIT_SIDE,
     // Failed vertically and should be locked into GRID
-    HitBottom,
+    MOVE_HIT_BOTTOM,
 } MoveResult;
 
 typedef struct Tetrimino {

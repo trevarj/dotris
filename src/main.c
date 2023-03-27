@@ -82,7 +82,7 @@ int main(void) {
     Tetrimino t = random_tetrimino();
 
     while (!quit) {
-        MoveResult move_res = Success;
+        MoveResult move_res = MOVE_SUCCESS;
         int drop_rows = 0;
         struct timespec now;
 
@@ -91,9 +91,9 @@ int main(void) {
 
         if (now_ms - ticker >= tick_freq) {
             ticker = now_ms;
-            move_res = move_tetrimino(&t, Down);
+            move_res = move_tetrimino(&t, MOVE_DOWN);
         }
-        if (move_res == HitBottom && t.y <= 0) {
+        if (move_res == MOVE_HIT_BOTTOM && t.y <= 0) {
             printf("Game Over! ");
             break;
         }
@@ -101,20 +101,20 @@ int main(void) {
         input = getch();
         switch (input) {
         case KEY_LEFT:
-            move_tetrimino(&t, Left);
+            move_tetrimino(&t, MOVE_LEFT);
             break;
         case KEY_RIGHT:
-            move_tetrimino(&t, Right);
+            move_tetrimino(&t, MOVE_RIGHT);
             break;
         case KEY_DOWN:
-            move_tetrimino(&t, Down);
+            move_tetrimino(&t, MOVE_DOWN);
             break;
         case KEY_UP:
             rotate_tetrimino(&t);
             break;
         case KEY_SPACE:
             drop_rows = drop_tetrimino(&t);
-            move_res = HitBottom;
+            move_res = MOVE_HIT_BOTTOM;
             break;
         case KEY_C:
             if (held != -1) {
@@ -130,7 +130,7 @@ int main(void) {
             break;
         }
 
-        if (move_res == HitBottom) {
+        if (move_res == MOVE_HIT_BOTTOM) {
             write_to_grid(&t);
             int cleared = clear_lines();
             if (cleared) {

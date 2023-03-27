@@ -201,7 +201,7 @@ uint8_t const Z_STATES[4][4][4] = {
 Tetrimino make_tetrimino(TetriminoType type) {
     Tetrimino new;
     new.type = type;
-    new.state = First;
+    new.state = FIRST_STATE;
     const uint8_t(*c)[4][4][4] = NULL;
     switch (type) {
     case I:
@@ -235,4 +235,6 @@ Tetrimino make_tetrimino(TetriminoType type) {
 // Makes a random Tetrimino
 Tetrimino random_tetrimino(void) { return make_tetrimino((TetriminoType)rand() % 7); }
 
-TetriminoState next_state(TetriminoState state) { return (state == Fourth) ? First : state + 1; }
+TetriminoState next_state(TetriminoState state) {
+    return (state == FOURTH_STATE) ? FIRST_STATE : state + 1;
+}
