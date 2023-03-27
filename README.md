@@ -56,6 +56,11 @@ cd build
 meson compile
 ```
 
+### GNU Make
+```
+make
+```
+
 Now you can run the `dotris` binary
 
 ```
