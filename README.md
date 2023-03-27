@@ -44,7 +44,6 @@ git clone https://github.com/trevarj/dotris && cd dotris
 ```
 
 ### GCC
-
 ```
 gcc -lncursesw -Iinclude/ src/main.c src/tetriminos.c src/grid.c -o dotris
 ```
@@ -54,6 +53,9 @@ gcc -lncursesw -Iinclude/ src/main.c src/tetriminos.c src/grid.c -o dotris
 meson setup ./build . --buildtype=release
 cd build
 meson compile
+
+# (optional)
+sudo meson install
 ```
 
 ### GNU Make
