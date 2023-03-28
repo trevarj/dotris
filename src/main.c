@@ -30,6 +30,8 @@ void setup(void) {
     curs_set(0);          // Hide the cursor
     keypad(stdscr, true); // We get F1, F2 etc..
     noecho();             // Don't echo() while we do getch
+    time_t t;
+    srandom((unsigned)time(&t)); // seed the RNG
 }
 
 // Based on BPS scoring system
