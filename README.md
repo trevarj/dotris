@@ -6,6 +6,8 @@ Mini Tetris made with dots
 
 ## How To Play
 
+### Controls
+
 Key           | Description
 ---           | ---
 `Left Arrow`  | Move left
@@ -15,6 +17,11 @@ Key           | Description
 `Spacebar`    | Hard drop
 `C`           | Hold Tetrimino / Restore Held
 `Q`           | Quit game
+
+### Terminal Zoom
+
+It is helpful if you increase the font size in your terminal emulator for a "regular"
+sized game.
 
 ## Mechanics
 
