@@ -44,6 +44,10 @@ Each level acts as a multiplier to the above table; i.e on level two, clearing o
 
 Every 10 lines cleared the speed of the falling piece increases by 40% and the grid is wiped.
 
+## Installing
+
+Currently only available through the [AUR](https://aur.archlinux.org/packages/dotris).
+
 ## Building
 
 ```
