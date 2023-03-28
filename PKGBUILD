@@ -1,7 +1,6 @@
 # Arch User Repository PKGBUILD
 # Maintainer: Your Name <tmarjeski at gmail dot com>
-pkgname=dotris
-pkgver=173a54e
+pkgname=dotris-git
 pkgrel=1
 pkgdesc="A mini Tetris game made with dots"
 arch=('any')
@@ -13,15 +12,15 @@ source=(git+$url)
 sha256sums=('SKIP')
 
 pkgver() {
-	git rev-parse --short HEAD
+	printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short=7 HEAD)"
 }
 
 build() {
-	cd "$pkgname"
+	cd dotris
 	make
 }
 
 package() {
-	cd "$pkgname"
+	cd dotris
 	make DESTDIR="$pkgdir/" PREFIX="/usr" install
 }

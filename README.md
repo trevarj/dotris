@@ -46,7 +46,7 @@ Every 10 lines cleared the speed of the falling piece increases by 40% and the g
 
 ## Installing
 
-Currently only available through the [AUR](https://aur.archlinux.org/packages/dotris).
+Currently only available through the [AUR](https://aur.archlinux.org/packages/dotris-git).
 
 ## Building
 
