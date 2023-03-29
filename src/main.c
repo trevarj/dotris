@@ -11,8 +11,8 @@
 #define KEY_SPACE ' '
 #define KEY_C 'c'
 #define KEY_Q 'q'
-#define LINES_PER_LEVEL 10
-#define STARTING_FREQ 1500 // 1.5 seconds
+#define LINES_PER_LEVEL 1
+#define STARTING_FREQ_SECS 1500
 
 void setup(void) {
     setlocale(LC_ALL, "");
@@ -31,7 +31,7 @@ void setup(void) {
     keypad(stdscr, true); // We get F1, F2 etc..
     noecho();             // Don't echo() while we do getch
     time_t t;
-    srandom((unsigned)time(&t)); // seed the RNG
+    srand((unsigned)time(&t)); // seed the RNG
 }
 
 // Based on BPS scoring system
@@ -70,7 +70,7 @@ void level_freq(double *freq, int *lines_left) {
 
 int main(void) {
     bool quit = false;
-    double tick_freq = STARTING_FREQ;
+    double tick_freq = STARTING_FREQ_SECS;
     int held = -1;
     int input;
     int lines_left = LINES_PER_LEVEL;
@@ -88,7 +88,7 @@ int main(void) {
         int drop_rows = 0;
         struct timespec now;
 
-        clock_gettime(CLOCK_REALTIME, &now);
+        timespec_get(&now, TIME_UTC);
         int64_t now_ms = now.tv_sec * INT64_C(1000) + now.tv_nsec / 1000000;
 
         if (now_ms - ticker >= tick_freq) {

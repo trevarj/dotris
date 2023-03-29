@@ -233,7 +233,7 @@ Tetrimino make_tetrimino(TetriminoType type) {
 }
 
 // Makes a random Tetrimino
-Tetrimino random_tetrimino(void) { return make_tetrimino((TetriminoType)random() % 7); }
+Tetrimino random_tetrimino(void) { return make_tetrimino((TetriminoType)rand() % 7); }
 
 TetriminoState next_state(TetriminoState state) {
     return (state == FOURTH_STATE) ? FIRST_STATE : state + 1;
