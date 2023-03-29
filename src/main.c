@@ -11,7 +11,7 @@
 #define KEY_SPACE ' '
 #define KEY_C 'c'
 #define KEY_Q 'q'
-#define LINES_PER_LEVEL 1
+#define LINES_PER_LEVEL 10
 #define STARTING_FREQ_SECS 1500
 
 void setup(void) {
