@@ -9,7 +9,7 @@ SOURCES = src/main.c src/grid.c src/tetriminos.c
 build: $(SOURCES)
 	$(CC) -o dotris $(CFLAGS) $(SOURCES)
 
-clean: build
+clean: dotris
 	rm dotris
 
 ifeq ($(PREFIX),)

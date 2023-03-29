@@ -13,6 +13,8 @@
 #define KEY_Q 'q'
 #define LINES_PER_LEVEL 10
 #define STARTING_FREQ_SECS 1500
+#define NONE_HELD -1
+#define RESTORED_HELD -2
 
 void setup(void) {
     setlocale(LC_ALL, "");
@@ -71,7 +73,7 @@ void level_freq(double *freq, int *lines_left) {
 int main(void) {
     bool quit = false;
     double tick_freq = STARTING_FREQ_SECS;
-    int held = -1;
+    int held_piece = NONE_HELD;
     int input;
     int lines_left = LINES_PER_LEVEL;
     int score = 0;
@@ -119,11 +121,11 @@ int main(void) {
             move_res = MOVE_HIT_BOTTOM;
             break;
         case KEY_C:
-            if (held != -1) {
-                t = make_tetrimino((TetriminoType)held);
-                held = -1;
-            } else {
-                held = (int)t.type;
+            if (held_piece >= 0) {
+                t = make_tetrimino((TetriminoType)held_piece);
+                held_piece = RESTORED_HELD;
+            } else if (held_piece == NONE_HELD) {
+                held_piece = (int)t.type;
                 t = random_tetrimino();
             }
             break;
@@ -142,10 +144,13 @@ int main(void) {
                 lines_left -= cleared;
                 level_freq(&tick_freq, &lines_left);
             }
+            if (held_piece == RESTORED_HELD)
+                held_piece = NONE_HELD;
             t = random_tetrimino();
         }
 
         draw_grid(&t);
+        mvprintw(GRID_BORDER_START_Y + 1, GRID_BORDER_END_X + 2, "%d", (int)held_piece);
     }
     endwin();
 

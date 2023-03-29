@@ -48,22 +48,25 @@ void print_grid(void) {
 #endif
 }
 
-void draw_border(void) {
-    MVPRINTW(GRID_BORDER_START_Y, GRID_BORDER_START_X, GRID_BORDER_TOP_LEFT);
-    for (int x = GRID_START_X; x < GRID_BORDER_END_X; x++)
-        MVPRINTW(GRID_BORDER_START_Y, x, GRID_BORDER_HORIZONTAL);
-    MVPRINTW(GRID_BORDER_START_Y, GRID_BORDER_END_X, GRID_BORDER_TOP_RIGHT);
+static void draw_box(int start_y, int start_x, int end_y, int end_x) {
+    MVPRINTW(start_y, start_x, GRID_BORDER_TOP_LEFT);
+    for (int x = start_x + 1; x < end_x; x++)
+        MVPRINTW(start_y, x, GRID_BORDER_HORIZONTAL);
+    MVPRINTW(start_y, end_x, GRID_BORDER_TOP_RIGHT);
 
-    for (int y = GRID_START_Y; y < GRID_BORDER_END_Y; y++) {
-        MVPRINTW(y, GRID_BORDER_START_X, GRID_BORDER_VERTICAL);
-        MVPRINTW(y, GRID_BORDER_END_X, GRID_BORDER_VERTICAL);
+    for (int y = start_y + 1; y < end_y; y++) {
+        MVPRINTW(y, start_x, GRID_BORDER_VERTICAL);
+        MVPRINTW(y, end_x, GRID_BORDER_VERTICAL);
     }
 
-    MVPRINTW(GRID_BORDER_END_Y, GRID_BORDER_START_X, GRID_BORDER_BOT_LEFT);
-    for (int x = GRID_START_X; x < GRID_BORDER_END_X; x++)
-        MVPRINTW(GRID_BORDER_END_Y, x, GRID_BORDER_HORIZONTAL);
-    MVPRINTW(GRID_BORDER_END_Y, GRID_BORDER_END_X, GRID_BORDER_BOT_RIGHT);
+    MVPRINTW(end_y, start_x, GRID_BORDER_BOT_LEFT);
+    for (int x = start_x + 1; x < end_x; x++)
+        MVPRINTW(end_y, x, GRID_BORDER_HORIZONTAL);
+    MVPRINTW(end_y, end_x, GRID_BORDER_BOT_RIGHT);
+}
 
+void draw_border(void) {
+    draw_box(GRID_BORDER_START_Y, GRID_BORDER_START_X, GRID_BORDER_END_Y, GRID_BORDER_END_X);
     MVPRINTW(GRID_BORDER_START_Y - 1, GRID_BORDER_START_X - 1, TITLE);
 }
 
