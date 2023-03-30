@@ -72,10 +72,10 @@ void level_freq(double *freq, int *lines_left) {
 
 inline static void get_time(struct timespec *now) {
 #ifdef __ANDROID__
-    clock_gettime(CLOCK_REALTIME, now);
+    clock_gettime(CLOCK_MONOTONIC, now);
 #else
     timespec_get(now, TIME_UTC);
-#endif /* ifdef __unix__ */
+#endif
 }
 
 int main(void) {
