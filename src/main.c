@@ -150,7 +150,6 @@ int main(void) {
         }
 
         draw_grid(&t);
-        mvprintw(GRID_BORDER_START_Y + 1, GRID_BORDER_END_X + 2, "%d", (int)held_piece);
     }
     endwin();
 
