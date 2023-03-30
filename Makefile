@@ -2,10 +2,13 @@ CFLAGS   := -std=c18 -Wall -Werror -pedantic
 CPPFLAGS := -Iinclude
 LDFLAGS  := -lncursesw
 
-VPATH := src
+VPATH := build src
+
+OBJ_PATH := out/
+SRC_PATH := src/
 
 SRC := main.c grid.c tetriminos.c
-OBJ := $(SRC:.c=.o)
+OBJ := $(addprefix $(OBJ_PATH),$(SRC:.c=.o))
 
 PREFIX := /usr/local
 
@@ -17,14 +20,17 @@ endif
 
 all: dotris
 
-.c.o:
-	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $+
+$(OBJ_PATH)%.o: $(SRC_PATH)%.c | $(OBJ_PATH)
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
+
+$(OBJ_PATH):
+	@mkdir -p $@
 
 dotris: $(OBJ)
 	$(CC) $(CFLAGS) -o $@ $+ $(LDFLAGS)
 
 clean:
-	rm -f dotris $(OBJ)
+	rm -rf dotris $(OBJ) $(OBJ_PATH)
 
 install: dotris
 	install -D dotris $(DESTDIR)$(PREFIX)/bin/dotris
