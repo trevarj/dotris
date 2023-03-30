@@ -1,19 +1,30 @@
-all: build
+CFLAGS   := -std=c18 -Wall -Werror -pedantic
+CPPFLAGS := -Iinclude
+LDFLAGS  := -lncursesw
 
-CFLAGS = -std=c18 -lncursesw -Iinclude/ -Wall -Werror -pedantic
+VPATH := src
+
+SRC := main.c grid.c tetriminos.c
+OBJ := $(SRC:.c=.o)
+
+PREFIX := /usr/local
+
 ifeq ($(DEBUG), 1)
-    CFLAGS += -g
+		CFLAGS += -Og -g
+else
+		CFLAGS += $(CFLAGS) -O2
 endif
-SOURCES = src/main.c src/grid.c src/tetriminos.c
 
-build: $(SOURCES)
-	$(CC) -o dotris $(CFLAGS) $(SOURCES)
+all: dotris
 
-clean: dotris
-	rm dotris
+.c.o:
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $+
 
-ifeq ($(PREFIX),)
-    PREFIX := /usr/local
-endif
-install: build
+dotris: $(OBJ)
+	$(CC) $(CFLAGS) -o $@ $+ $(LDFLAGS)
+
+clean:
+	rm -f dotris $(OBJ)
+
+install: dotris
 	install -D dotris $(DESTDIR)$(PREFIX)/bin/dotris
