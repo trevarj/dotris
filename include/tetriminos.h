@@ -1,3 +1,5 @@
+#ifndef TETRIMINOS_H
+#define TETRIMINOS_H
 #include <stdint.h>
 
 typedef enum TetriminoType { I, J, L, O, S, T, Z } TetriminoType;
@@ -37,3 +39,5 @@ TetriminoState next_state(TetriminoState state);
 
 // Makes a random Tetrimino
 Tetrimino random_tetrimino(void);
+
+#endif // !TETRIMINOS_H

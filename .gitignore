@@ -1,4 +1,6 @@
 .cache/
 build/
+out/
 *.o
 dotris
+test

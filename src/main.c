@@ -16,7 +16,7 @@
 #define NONE_HELD -1
 #define RESTORED_HELD -2
 
-void setup(void) {
+void setup(bool *draw_hud) {
     setlocale(LC_ALL, "");
     initscr();
     int x, y;
@@ -26,6 +26,8 @@ void setup(void) {
                GRID_BORDER_END_X + 2, GRID_BORDER_END_Y + 1, x, y);
         endwin();
         exit(EXIT_FAILURE);
+    } else if (x < GRID_BORDER_END_X + 6) {
+        *draw_hud = false;
     }
     raw();                // Line buffering disabled
     halfdelay(1);         // 1/10th of a second delay on getch
@@ -62,11 +64,12 @@ int calculate_points(int cleared, int drop_rows, int level) {
 }
 
 // Increase drop speed by 40% every 10 lines cleared
-void level_freq(double *freq, int *lines_left) {
+void level_freq(int *level, int64_t *freq, int *lines_left) {
     if (*lines_left <= 0) {
         *freq *= .6;
         clear_grid();
         *lines_left = LINES_PER_LEVEL;
+        (*level)++;
     }
 }
 
@@ -79,21 +82,20 @@ inline static void get_time(struct timespec *now) {
 }
 
 int main(void) {
-    bool quit = false;
-    double tick_freq = STARTING_FREQ_SECS;
-    int held_piece = NONE_HELD;
-    int input;
-    int lines_left = LINES_PER_LEVEL;
-    int score = 0;
-    int total_cleared = 0;
-    int64_t ticker = 0;
+    bool quit = false, can_draw_hud = true;
+    int64_t tick_freq = STARTING_FREQ_SECS, ticker = 0;
+    int held_piece = NONE_HELD, input, lines_left = LINES_PER_LEVEL, score = 0, total_cleared = 0,
+        level = 1;
 
-    setup();
+    setup(&can_draw_hud);
     draw_border();
+    if (can_draw_hud)
+        draw_hud(level, lines_left, LINES_PER_LEVEL);
 
     Tetrimino t = random_tetrimino();
 
     while (!quit) {
+        draw_held_tetrimino(held_piece);
         MoveResult move_res = MOVE_SUCCESS;
         int drop_rows = 0;
         struct timespec now;
@@ -145,11 +147,13 @@ int main(void) {
             write_to_grid(&t);
             int cleared = clear_lines();
             if (cleared) {
-                int level = total_cleared / LINES_PER_LEVEL;
+                level = (total_cleared / LINES_PER_LEVEL) + 1;
                 score += calculate_points(cleared, drop_rows, level);
                 total_cleared += cleared;
                 lines_left -= cleared;
-                level_freq(&tick_freq, &lines_left);
+                level_freq(&level, &tick_freq, &lines_left);
+                if (can_draw_hud)
+                    draw_hud(level, lines_left, LINES_PER_LEVEL);
             }
             if (held_piece == RESTORED_HELD)
                 held_piece = NONE_HELD;

@@ -4,9 +4,18 @@
 #include "grid.h"
 
 #define MVPRINTW(Y, X, STR) mvprintw(Y, X, "%s", STR)
+#define I_TETR " ⡇"
+#define J_TETR " ⣰"
+#define L_TETR "⢰⡀"
+#define O_TETR "⠰⠆"
+#define S_TETR "⢀⡤"
+#define T_TETR "⠠⡤"
+#define Z_TETR "⢤⡀"
 
-const char *TITLE = "⣼⢠⡄⢤⠄⡤⢠⢀⡤";
-
+static const char *TITLE = "⣼⢠⡄⢤⠄⡤⢠⢀⡤";
+/* static const char *LVL = "⣆⢆⢶⡀"; */
+/* static const char *LN = "⣆⢰⢴"; */
+static const char *TETRIMINO_DOTS[] = {I_TETR, J_TETR, L_TETR, O_TETR, S_TETR, T_TETR, Z_TETR};
 /*
  * Imagine each character as an 8 bit binary number
  * where the bits are as follows:
@@ -14,8 +23,10 @@ const char *TITLE = "⣼⢠⡄⢤⠄⡤⢠⢀⡤";
  * 1 4
  * 2 5
  * 6 7
+ *
+ * The 8 bit number is then the index into this array
  */
-const char *DOTS[] = {
+static const char DOTS[][4] = {
     " ", "⠁", "⠂", "⠃", "⠄", "⠅", "⠆", "⠇", "⠈", "⠉", "⠊", "⠋", "⠌", "⠍", "⠎", "⠏", "⠐", "⠑", "⠒",
     "⠓", "⠔", "⠕", "⠖", "⠗", "⠘", "⠙", "⠚", "⠛", "⠜", "⠝", "⠞", "⠟", "⠠", "⠡", "⠢", "⠣", "⠤", "⠥",
     "⠦", "⠧", "⠨", "⠩", "⠪", "⠫", "⠬", "⠭", "⠮", "⠯", "⠰", "⠱", "⠲", "⠳", "⠴", "⠵", "⠶", "⠷", "⠸",
@@ -32,8 +43,74 @@ const char *DOTS[] = {
     "⣷", "⣸", "⣹", "⣺", "⣻", "⣼", "⣽", "⣾", "⣿",
 };
 
-// DOTS[1] because the 0th one is a space
-const int DOT_LEN = sizeof(DOTS) / sizeof(DOTS[1]);
+static const uint8_t ALPHA[][4][4] = {
+    {{1, 1, 1, 0}, {1, 0, 1, 0}, {1, 1, 1, 0}, {1, 0, 1, 0}},
+    {{1, 1, 1, 0}, {1, 1, 0, 0}, {1, 0, 1, 0}, {1, 1, 1, 0}},
+    {{1, 1, 1, 0}, {1, 0, 0, 0}, {1, 0, 0, 0}, {1, 1, 1, 0}},
+    {{1, 1, 0, 0}, {1, 0, 1, 0}, {1, 0, 1, 0}, {1, 1, 1, 0}},
+    {{1, 1, 1, 0}, {1, 1, 0, 0}, {1, 1, 0, 0}, {1, 1, 1, 0}},
+    {{1, 1, 1, 0}, {1, 1, 1, 0}, {1, 0, 0, 0}, {1, 0, 0, 0}},
+    {{1, 1, 1, 0}, {1, 0, 0, 0}, {1, 1, 1, 0}, {1, 1, 1, 0}},
+    {{1, 0, 1, 0}, {1, 1, 1, 0}, {1, 0, 1, 0}, {1, 0, 1, 0}},
+    {{0, 1, 0, 0}, {0, 1, 0, 0}, {0, 1, 0, 0}, {0, 1, 0, 0}},
+    {{1, 1, 1, 0}, {0, 0, 1, 0}, {1, 0, 1, 0}, {1, 1, 1, 0}},
+    {{1, 0, 1, 0}, {1, 1, 0, 0}, {1, 1, 0, 0}, {1, 0, 1, 0}},
+    {{1, 0, 0, 0}, {1, 0, 0, 0}, {1, 0, 0, 0}, {1, 1, 1, 0}},
+    {{1, 0, 1, 0}, {1, 1, 1, 0}, {1, 0, 1, 0}, {1, 0, 1, 0}},
+    {{1, 0, 1, 0}, {1, 1, 1, 0}, {1, 0, 1, 0}, {1, 0, 1, 0}},
+    {{1, 1, 1, 0}, {1, 0, 1, 0}, {1, 0, 1, 0}, {1, 1, 1, 0}},
+    {{1, 1, 1, 0}, {1, 0, 1, 0}, {1, 1, 1, 0}, {1, 0, 0, 0}},
+    {{1, 1, 1, 0}, {1, 0, 1, 0}, {1, 0, 1, 0}, {1, 1, 1, 1}},
+    {{1, 1, 1, 0}, {1, 0, 1, 0}, {1, 1, 0, 0}, {1, 0, 1, 0}},
+    {{1, 1, 1, 0}, {1, 0, 0, 0}, {0, 1, 1, 0}, {1, 1, 1, 0}},
+    {{1, 1, 1, 0}, {0, 1, 0, 0}, {0, 1, 0, 0}, {0, 1, 0, 0}},
+    {{1, 0, 1, 0}, {1, 0, 1, 0}, {1, 0, 1, 0}, {1, 1, 1, 0}},
+    {{1, 0, 1, 0}, {1, 0, 1, 0}, {1, 1, 1, 0}, {0, 1, 0, 0}},
+    {{1, 0, 1, 0}, {1, 1, 1, 0}, {1, 1, 1, 0}, {1, 1, 1, 0}},
+    {{1, 0, 1, 0}, {0, 1, 0, 0}, {0, 1, 0, 0}, {1, 0, 1, 0}},
+    {{1, 0, 1, 0}, {0, 1, 0, 0}, {0, 1, 0, 0}, {0, 1, 0, 0}},
+    {{1, 1, 1, 0}, {0, 0, 1, 0}, {0, 1, 0, 0}, {1, 1, 1, 0}},
+};
+
+static const uint8_t NUMERIC[][4][4] = {
+    {{1, 1, 1, 0}, {1, 0, 1, 0}, {1, 0, 1, 0}, {1, 1, 1, 0}},
+    {{1, 1, 0, 0}, {0, 1, 0, 0}, {0, 1, 0, 0}, {1, 1, 1, 0}},
+    {{1, 1, 1, 0}, {0, 0, 1, 0}, {0, 1, 0, 0}, {1, 1, 1, 0}},
+    {{1, 1, 1, 0}, {0, 1, 1, 0}, {0, 1, 1, 0}, {1, 1, 1, 0}},
+    {{1, 0, 1, 0}, {1, 1, 1, 0}, {0, 0, 1, 0}, {0, 0, 1, 0}},
+    {{1, 1, 1, 0}, {1, 1, 0, 0}, {0, 0, 1, 0}, {1, 1, 1, 0}},
+    {{1, 1, 1, 0}, {1, 0, 0, 0}, {1, 1, 1, 0}, {1, 1, 1, 0}},
+    {{1, 1, 1, 0}, {0, 0, 1, 0}, {0, 1, 0, 0}, {1, 0, 0, 0}},
+    {{1, 1, 1, 0}, {1, 1, 1, 0}, {1, 1, 1, 0}, {1, 1, 1, 0}},
+    {{1, 1, 1, 0}, {1, 1, 1, 0}, {0, 0, 1, 0}, {1, 1, 1, 0}},
+};
+
+DotChar dotmap_to_dotchar(const uint8_t (*dotmap)[4]) {
+    int c1, c2, x_off = 0;
+    int *c = &c1;
+    for (int i = 0; i < 2; i++) {
+        *c = (dotmap[3][1 + x_off] << 7) | (dotmap[3][0 + x_off] << 6) |
+             (dotmap[2][1 + x_off] << 5) | (dotmap[1][1 + x_off] << 4) |
+             (dotmap[0][1 + x_off] << 3) | (dotmap[2][0 + x_off] << 2) |
+             (dotmap[1][0 + x_off] << 1) | (dotmap[0][0 + x_off]);
+        c = &c2;
+        x_off = 2;
+    }
+    return ((DotChar){.c1 = DOTS[c1], .c2 = DOTS[c2]});
+}
+
+DotChar char_to_dotchar(int i) {
+    const uint8_t(*dotmap)[4];
+    if (i >= 48 && i <= 57) {
+        dotmap = NUMERIC[i - 48];
+    } else if (i >= 65 && i <= 90) {
+        dotmap = ALPHA[i - 65];
+    } else {
+        // unsupported
+        return ((DotChar){.c1 = DOTS[0], .c2 = DOTS[0]});
+    }
+    return dotmap_to_dotchar(dotmap);
+}
 
 uint8_t GRID[GRID_HEIGHT][GRID_WIDTH]; // The 10 x 22 gameboard
 
@@ -91,6 +168,23 @@ void draw_grid(Tetrimino *t) {
     print_grid();
     // Remove current piece from grid
     remove_from_grid(t);
+}
+
+void draw_held_tetrimino(int type) {
+    const char **s;
+    const char *blank = "  ";
+    if (type >= 0) {
+        s = &TETRIMINO_DOTS[type];
+    } else {
+        s = &blank;
+    }
+    MVPRINTW(GRID_BORDER_START_Y + 1, GRID_BORDER_END_X + 1, *s);
+}
+
+void draw_hud(int level, int lines_left, int lines_per_level) {
+    mvprintw(GRID_BORDER_END_Y - 2, GRID_BORDER_END_X + 1, "LVL: %d", level);
+    mvprintw(GRID_BORDER_END_Y - 1, GRID_BORDER_END_X + 1, "%d/%d", lines_per_level - lines_left,
+             lines_per_level);
 }
 
 // Checks if the given tetrimino state and position (x,y) can be placed on the GRID

@@ -1,3 +1,5 @@
+#ifndef GRID_H
+#define GRID_H
 #include "tetriminos.h"
 
 #define CELL_WIDTH 2  // number of columns in braille char
@@ -26,6 +28,8 @@
 
 void draw_border(void);
 void draw_grid(Tetrimino *t);
+void draw_held_tetrimino(int type);
+void draw_hud(int level, int lines_left, int lines_per_level);
 
 // Move piece left, right or down
 MoveResult move_tetrimino(Tetrimino *t, Direction d);
@@ -39,3 +43,13 @@ void remove_from_grid(Tetrimino *t);
 
 int clear_lines(void);
 void clear_grid(void);
+
+typedef struct DotChar {
+    const char *c1;
+    const char *c2;
+} DotChar;
+
+DotChar dotmap_to_dotchar(const uint8_t (*dotmap)[4]);
+DotChar char_to_dotchar(int a);
+
+#endif // !GRID_H
