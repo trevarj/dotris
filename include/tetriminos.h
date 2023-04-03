@@ -2,7 +2,7 @@
 #define TETRIMINOS_H
 #include <stdint.h>
 
-typedef enum TetriminoType { I, J, L, O, S, T, Z } TetriminoType;
+typedef enum TetriminoType { I, J, L, O, S, T, Z, TETRIMINO_CNT } TetriminoType;
 
 typedef enum TetriminoState {
     FIRST_STATE,

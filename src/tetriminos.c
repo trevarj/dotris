@@ -4,6 +4,16 @@
 
 #include "tetriminos.h"
 
+#ifdef DEBUG
+#define ASSERT(expr)                                                                               \
+    do {                                                                                           \
+        if (!(expr))                                                                               \
+            abort();                                                                               \
+    } while (0)
+#else
+#define ASSERT(expr)
+#endif
+
 uint8_t const I_STATES[4][4][4] = {
     {{0, 0, 1, 0}, {0, 0, 1, 0}, {0, 0, 1, 0}, {0, 0, 1, 0}},
     {{0, 0, 0, 0}, {1, 1, 1, 1}, {0, 0, 0, 0}, {0, 0, 0, 0}},
@@ -83,6 +93,9 @@ Tetrimino make_tetrimino(TetriminoType type) {
     case Z:
         c = &Z_STATES;
         break;
+    default:
+        ASSERT(0 && "unreachable");
+        break;
     }
     new.states = c;
     new.x = 2;
@@ -91,7 +104,7 @@ Tetrimino make_tetrimino(TetriminoType type) {
 }
 
 // Makes a random Tetrimino
-Tetrimino random_tetrimino(void) { return make_tetrimino((TetriminoType)rand() % 7); }
+Tetrimino random_tetrimino(void) { return make_tetrimino((TetriminoType)rand() % TETRIMINO_CNT); }
 
 TetriminoState next_state(TetriminoState state) {
     return (state == FOURTH_STATE) ? FIRST_STATE : state + 1;

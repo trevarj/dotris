@@ -1,6 +1,6 @@
-CFLAGS   := -std=c18 -Wall -Wextra -Werror -Wpedantic
+CFLAGS   := -std=c18 -Wall -Wextra -Wpedantic
 CPPFLAGS := -Iinclude
-LDFLAGS  := -lncursesw
+LDFLAGS  := `pkg-config --libs ncursesw`
 
 VPATH := out src tests
 
@@ -18,7 +18,7 @@ TST_OBJ := $(addprefix $(OBJ_PATH),$(TST:.c=.o))
 PREFIX := /usr/local
 
 ifeq ($(DEBUG), 1)
-		CFLAGS += -Og -ggdb -fsanitize=address,undefined -DDEBUG
+		CFLAGS += -Og -ggdb -fsanitize=address,undefined -DDEBUG -Werror
 else
 		CFLAGS += $(CFLAGS) -O2
 endif
