@@ -119,7 +119,7 @@ void print_grid(void) {
 #else
     for (int y = 0; y < GRID_HEIGHT; y++) {
         for (int x = 0; x < GRID_WIDTH; x++) {
-            mvprintw(y, 10 + x, "%d", GRID[y][x]);
+            mvprintw(y, 20 + x, "%d", GRID[y][x]);
         }
     }
 #endif
@@ -208,7 +208,9 @@ int is_valid_transformation(const uint8_t (*state)[4][4], int x, int y) {
 inline void write_to_grid(Tetrimino *t) {
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 4; j++) {
-            GRID[t->y + j][t->x + i] |= (*t->states)[t->state][j][i];
+            int y2 = t->y + j, x2 = t->x + i;
+            if (y2 >= 0 && x2 >= 0 && y2 < GRID_HEIGHT && x2 < GRID_WIDTH)
+                GRID[t->y + j][t->x + i] |= (*t->states)[t->state][j][i];
         }
     }
 }
@@ -261,9 +263,9 @@ int drop_tetrimino(Tetrimino *t) {
 inline void remove_from_grid(Tetrimino *t) {
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 4; j++) {
-            /* if ((*t->states)[t->state][j][i]) */
-            /*     GRID[t->y + j][t->x + i] = 0; */
-            GRID[t->y + j][t->x + i] ^= (*t->states)[t->state][j][i];
+            int y2 = t->y + j, x2 = t->x + i;
+            if (y2 >= 0 && x2 >= 0 && y2 < GRID_HEIGHT && x2 < GRID_WIDTH)
+                GRID[t->y + j][t->x + i] ^= (*t->states)[t->state][j][i];
         }
     }
 }

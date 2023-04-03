@@ -18,7 +18,7 @@ TST_OBJ := $(addprefix $(OBJ_PATH),$(TST:.c=.o))
 PREFIX := /usr/local
 
 ifeq ($(DEBUG), 1)
-		CFLAGS += -Og -g
+		CFLAGS += -Og -g3 -fsanitize=address,undefined -DDEBUG
 else
 		CFLAGS += $(CFLAGS) -O2
 endif
