@@ -44,6 +44,21 @@ Each level acts as a multiplier to the above table; i.e on level two, clearing o
 
 Every 10 lines cleared the speed of the falling piece increases by 40% and the grid is wiped.
 
+## Troubleshooting
+
+If the pieces are not rendering correctly (weird spacing between dots), you will probably
+need to install another font that has 
+[Braille pattern](https://en.wikipedia.org/wiki/Braille_Patterns) characters.
+
+Some fonts that have perfect characters for Tetris pieces: 
+[Terminus](https://files.ax86.net/terminus-ttf/), 
+[Cozette](https://github.com/slavfox/Cozette), 
+[Spleen](https://www.cambus.net/spleen-monospaced-bitmap-fonts/)
+
+If you use Kitty terminal emulator (recommended), these characters will be
+[rendered programmatically](https://github.com/kovidgoyal/kitty/discussions/6152), not
+using the configured font.
+
 ## Installing
 
 Currently only available through the [AUR](https://aur.archlinux.org/packages/dotris-git).
