@@ -4,6 +4,19 @@ Mini Tetris made with dots
 
 ![gameplay](./dotris.gif)
 
+- [How To Play](#how-to-play)
+    - [Controls](#controls)
+    - [Terminal Zoom](#terminal-zoom)
+- [Mechanics](#mechanics)
+    - [Scoring](#scoring)
+    - [Levels](#levels)
+- [Troubleshooting](#troubleshooting)
+- [Installing](#installing)
+- [Building](#building)
+    - [GCC](#gcc)
+    - [Meson](#meson)
+    - [GNU Make](#gnu-make)
+
 ## How To Play
 
 ### Controls
@@ -74,7 +87,7 @@ git clone https://github.com/trevarj/dotris && cd dotris
 gcc -lncursesw -Iinclude/ src/main.c src/tetriminos.c src/grid.c -o dotris
 ```
 
-### Meson (Clang)
+### Meson
 ```
 meson setup ./build . --buildtype=release
 cd build
