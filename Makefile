@@ -1,4 +1,4 @@
-CFLAGS   := -std=c18 -Wall -Wextra -Wpedantic
+CFLAGS   := -std=c11 -Wall -Wextra -Wpedantic
 CPPFLAGS := -Iinclude
 LDFLAGS  := `pkg-config --libs ncursesw`
 
