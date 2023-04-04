@@ -95,7 +95,6 @@ int main(void) {
     Tetrimino t = random_tetrimino();
 
     while (!quit) {
-        draw_held_tetrimino(held_piece);
         MoveResult move_res = MOVE_SUCCESS;
         int drop_rows = 0;
         struct timespec now;
@@ -161,6 +160,7 @@ int main(void) {
         }
 
         draw_grid(&t);
+        draw_held_tetrimino(held_piece);
     }
     endwin();
 
