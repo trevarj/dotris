@@ -2,7 +2,7 @@
 
 #include <curses.h>
 
-#include "tetriminos.h"
+#include "dotris.h"
 
 #ifdef DEBUG
 #define ASSERT(expr)                                                                               \
@@ -66,10 +66,10 @@ uint8_t const Z_STATES[4][4][4] = {
 // clang-format on
 
 // Makes a new Tetrimino in the default position.
-Tetrimino make_tetrimino(TetriminoType type) {
+Tetrimino tetrimino_create(TetriminoType type) {
     Tetrimino new;
-    new.type = type;
-    new.state = FIRST_STATE;
+    new.type                   = type;
+    new.state                  = FIRST_STATE;
     const uint8_t(*c)[4][4][4] = NULL;
     switch (type) {
     case I:
@@ -98,14 +98,16 @@ Tetrimino make_tetrimino(TetriminoType type) {
         break;
     }
     new.states = c;
-    new.x = 2;
-    new.y = 0;
+    new.x      = 2;
+    new.y      = 0;
     return new;
 }
 
 // Makes a random Tetrimino
-Tetrimino random_tetrimino(void) { return make_tetrimino((TetriminoType)rand() % TETRIMINO_CNT); }
+Tetrimino tetrimino_create_random(void) {
+    return tetrimino_create((TetriminoType)rand() % TETRIMINO_CNT);
+}
 
-TetriminoState next_state(TetriminoState state) {
+TetriminoState tetrimino_next_state(TetriminoState state) {
     return (state == FOURTH_STATE) ? FIRST_STATE : state + 1;
 }

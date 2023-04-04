@@ -6,15 +6,15 @@
 #include <string.h>
 #include <time.h>
 
-#include "grid.h"
+#include "dotris.h"
 
-#define KEY_SPACE ' '
-#define KEY_C 'c'
-#define KEY_Q 'q'
-#define LINES_PER_LEVEL 10
+#define KEY_SPACE          ' '
+#define KEY_C              'c'
+#define KEY_Q              'q'
+#define LINES_PER_LEVEL    10
 #define STARTING_FREQ_SECS 1500
-#define NONE_HELD -1
-#define RESTORED_HELD -2
+#define NONE_HELD          -1
+#define RESTORED_HELD      -2
 
 void setup(bool *draw_hud) {
     setlocale(LC_ALL, "");
@@ -67,7 +67,7 @@ int calculate_points(int cleared, int drop_rows, int level) {
 void level_freq(int *level, int64_t *freq, int *lines_left) {
     if (*lines_left <= 0) {
         *freq *= .6;
-        clear_grid();
+        grid_clear_all();
         *lines_left = LINES_PER_LEVEL;
         (*level)++;
     }
@@ -82,28 +82,28 @@ inline static void get_time(struct timespec *now) {
 }
 
 int main(void) {
-    bool quit = false, can_draw_hud = true;
+    bool    quit = false, can_draw_hud = true;
     int64_t tick_freq = STARTING_FREQ_SECS, ticker = 0;
     int held_piece = NONE_HELD, input, lines_left = LINES_PER_LEVEL, score = 0, total_cleared = 0,
         level = 1;
 
     setup(&can_draw_hud);
-    draw_border();
+    grid_draw_border();
     if (can_draw_hud)
         draw_hud(level, lines_left, LINES_PER_LEVEL);
 
-    Tetrimino t = random_tetrimino();
+    Tetrimino t = tetrimino_create_random();
 
     while (!quit) {
-        MoveResult move_res = MOVE_SUCCESS;
-        int drop_rows = 0;
-        struct timespec now;
+        TetriminoMoveResult move_res  = MOVE_SUCCESS;
+        int                 drop_rows = 0;
+        struct timespec     now;
         get_time(&now);
         int64_t now_ms = now.tv_sec * INT64_C(1000) + now.tv_nsec / 1000000;
 
         if (now_ms - ticker >= tick_freq) {
-            ticker = now_ms;
-            move_res = move_tetrimino(&t, MOVE_DOWN);
+            ticker   = now_ms;
+            move_res = grid_move_tetrimino(&t, MOVE_DOWN);
         }
         if (move_res == MOVE_HIT_BOTTOM && t.y <= 0) {
             printf("Game Over! ");
@@ -113,28 +113,28 @@ int main(void) {
         input = getch();
         switch (input) {
         case KEY_LEFT:
-            move_tetrimino(&t, MOVE_LEFT);
+            grid_move_tetrimino(&t, MOVE_LEFT);
             break;
         case KEY_RIGHT:
-            move_tetrimino(&t, MOVE_RIGHT);
+            grid_move_tetrimino(&t, MOVE_RIGHT);
             break;
         case KEY_DOWN:
-            move_tetrimino(&t, MOVE_DOWN);
+            grid_move_tetrimino(&t, MOVE_DOWN);
             break;
         case KEY_UP:
-            rotate_tetrimino(&t);
+            grid_rotate_tetrimino(&t);
             break;
         case KEY_SPACE:
-            drop_rows = drop_tetrimino(&t);
-            move_res = MOVE_HIT_BOTTOM;
+            drop_rows = grid_drop_tetrimino(&t);
+            move_res  = MOVE_HIT_BOTTOM;
             break;
         case KEY_C:
             if (held_piece >= 0) {
-                t = make_tetrimino((TetriminoType)held_piece);
+                t          = tetrimino_create((TetriminoType)held_piece);
                 held_piece = RESTORED_HELD;
             } else if (held_piece == NONE_HELD) {
                 held_piece = (int)t.type;
-                t = random_tetrimino();
+                t          = tetrimino_create_random();
             }
             break;
         case KEY_Q:
@@ -143,23 +143,23 @@ int main(void) {
         }
 
         if (move_res == MOVE_HIT_BOTTOM) {
-            write_to_grid(&t);
-            int cleared = clear_lines();
+            grid_write_tetrimino(&t);
+            int cleared = grid_clear_lines();
             if (cleared) {
-                level = (total_cleared / LINES_PER_LEVEL) + 1;
-                score += calculate_points(cleared, drop_rows, level);
+                level         = (total_cleared / LINES_PER_LEVEL) + 1;
+                score         += calculate_points(cleared, drop_rows, level);
                 total_cleared += cleared;
-                lines_left -= cleared;
+                lines_left    -= cleared;
                 level_freq(&level, &tick_freq, &lines_left);
                 if (can_draw_hud)
                     draw_hud(level, lines_left, LINES_PER_LEVEL);
             }
             if (held_piece == RESTORED_HELD)
                 held_piece = NONE_HELD;
-            t = random_tetrimino();
+            t = tetrimino_create_random();
         }
 
-        draw_grid(&t);
+        grid_draw(&t);
         draw_held_tetrimino(held_piece);
     }
     endwin();
