@@ -64,7 +64,7 @@ int calculate_points(int cleared, int drop_rows, int level) {
 }
 
 // Increase drop speed by 40% every 10 lines cleared
-void level_freq(int *level, int64_t *freq, int *lines_left) {
+void check_level(int *level, int64_t *freq, int *lines_left) {
     if (*lines_left <= 0) {
         *freq *= .6;
         grid_clear_all();
@@ -146,11 +146,10 @@ int main(void) {
             grid_write_tetrimino(&t);
             int cleared = grid_clear_lines();
             if (cleared) {
-                level         = (total_cleared / LINES_PER_LEVEL) + 1;
-                score         += calculate_points(cleared, drop_rows, level);
                 total_cleared += cleared;
                 lines_left    -= cleared;
-                level_freq(&level, &tick_freq, &lines_left);
+                score         += calculate_points(cleared, drop_rows, level);
+                check_level(&level, &tick_freq, &lines_left);
                 if (can_draw_hud)
                     draw_hud(level, lines_left, LINES_PER_LEVEL);
             }
