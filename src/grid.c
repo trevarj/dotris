@@ -181,7 +181,8 @@ void draw_held_tetrimino(int type) {
     MVPRINTW(GRID_BORDER_START_Y + 1, GRID_BORDER_END_X + 1, *s);
 }
 
-void draw_hud(int level, int lines_left, int lines_per_level) {
+void draw_hud(int score, int level, int lines_left, int lines_per_level) {
+    mvprintw(GRID_BORDER_END_Y - 3, GRID_BORDER_END_X + 1, "PTS: %d", score);
     mvprintw(GRID_BORDER_END_Y - 2, GRID_BORDER_END_X + 1, "LVL: %d", level);
     mvprintw(GRID_BORDER_END_Y - 1, GRID_BORDER_END_X + 1, "%d/%d", lines_per_level - lines_left,
              lines_per_level);

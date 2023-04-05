@@ -63,7 +63,7 @@ Tetrimino           tetrimino_create_random(void);
 void                grid_draw_border(void);
 void                grid_draw(Tetrimino *t);
 void                draw_held_tetrimino(int type);
-void                draw_hud(int level, int lines_left, int lines_per_level);
+void                draw_hud(int score, int level, int lines_left, int lines_per_level);
 
 TetriminoMoveResult grid_move_tetrimino(Tetrimino *t, TetriminoMoveDirection d);
 void                grid_rotate_tetrimino(Tetrimino *t);

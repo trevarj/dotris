@@ -90,7 +90,7 @@ int main(void) {
     setup(&can_draw_hud);
     grid_draw_border();
     if (can_draw_hud)
-        draw_hud(level, lines_left, LINES_PER_LEVEL);
+        draw_hud(score, level, lines_left, LINES_PER_LEVEL);
 
     Tetrimino t = tetrimino_create_random();
 
@@ -151,7 +151,7 @@ int main(void) {
                 score         += calculate_points(cleared, drop_rows, level);
                 check_level(&level, &tick_freq, &lines_left);
                 if (can_draw_hud)
-                    draw_hud(level, lines_left, LINES_PER_LEVEL);
+                    draw_hud(score, level, lines_left, LINES_PER_LEVEL);
             }
             if (held_piece == RESTORED_HELD)
                 held_piece = NONE_HELD;
