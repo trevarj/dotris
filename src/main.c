@@ -81,11 +81,16 @@ inline static void get_time(struct timespec *now) {
 #endif
 }
 
-int main(void) {
+int main(int argc, char *argv[]) {
     bool    quit = false, can_draw_hud = true;
     int64_t tick_freq = STARTING_FREQ_SECS, ticker = 0;
     int held_piece = NONE_HELD, input, lines_left = LINES_PER_LEVEL, score = 0, total_cleared = 0,
         level = 1;
+
+    if (argc > 1 && strcmp(argv[1], "-v") == 0) {
+        printf("dotris %s\n", VERSION);
+        exit(0);
+    }
 
     setup(&can_draw_hud);
     grid_draw_border();

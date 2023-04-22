@@ -2,6 +2,8 @@
 #define DOTRIS_H
 #include <stdint.h>
 
+#define VERSION                "1.0.0"
+
 #define CELL_WIDTH             2 // number of columns in braille char
 #define CELL_HEIGHT            4 // number of rows in braille char
 
