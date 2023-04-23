@@ -25,7 +25,7 @@ endif
 
 all: dotris
 
-.PHONY: test clean install
+.PHONY: test clean install install-man
 
 $(OBJ_PATH)%.o: $(SRC_PATH)%.c | $(OBJ_PATH)
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
@@ -45,7 +45,15 @@ test: $(TST_OBJ) $(OBJ)
 	./test
 
 clean:
-	rm -rf dotris test $(OBJ) $(OBJ_PATH)
+	rm -rf dotris dotris.6.gz test $(OBJ) $(OBJ_PATH)
 
-install: dotris
-	install -D dotris $(DESTDIR)$(PREFIX)/bin/dotris
+MAN_DIR := $(DESTDIR)$(PREFIX)/man/man6/
+install-man:
+	gzip -fk dotris.6
+	mkdir -p $(MAN_DIR)
+	install dotris.6.gz $(MAN_DIR)
+
+INSTALL_DIR := $(DESTDIR)$(PREFIX)/bin/
+install: dotris install-man
+	mkdir -p $(INSTALL_DIR)
+	install dotris $(INSTALL_DIR)

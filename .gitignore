@@ -3,4 +3,5 @@ build/
 out/
 *.o
 dotris
+dotris.6.gz
 test
