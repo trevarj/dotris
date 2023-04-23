@@ -1,0 +1,53 @@
+.Dd April 23, 2023
+.Dt dotris 6
+.Os
+.Sh NAME
+.Nm dotris
+.Nd "a Tetris clone using ncurses and braille characters"
+.Sh SYNOPSIS
+.Nm
+.Op Fl v
+.Sh DESCRIPTION
+.Nm
+is a Tetris clone that is playable within a terminal and uses Braille characters
+to render the pieces.
+.Ss SCORING
+The scoring system is based on the BPS version of Tetris. 
+When you clear one, two, three or four (tetris) lines at once you will earn 40,
+100, 300, 1200 points, respectively.
+If the piece used to clear was hard dropped you get one
+point per row added to the base amount.
+Each level acts as a multiplier, for
+example, on level two, clearing one line is worth 80 points.
+.Ss LEVELS
+After every 10 lines cleared, the speed of the falling tetrimino increases by
+40% and the current state of the grid is cleared so you have a fresh start per
+level.
+.Sh ENVIRONMENT
+.Nm
+is best played in a terminal emulator that renders Braille characters
+programmatically instead of relying on the font so that the pieces are evenly
+spaced.
+It is also more comfortable to play while the terminal is zoomed.
+Example terminals that do this are
+.Xr st 1 (with box draw patches) and
+.Xr kitty 1 .
+.Sh CONTROLS
+.Bl -tag -width 10n
+.It Left
+Move tetrimino left
+.It Right
+Move tetrimino right
+.It Up
+Rotate tetrimino clockwise
+.It Down
+Soft drop (move down)
+.It Spacebar
+Hard drop
+.It C
+Hold/Restore tetrimino
+.It Q
+Quit game
+.El
+.Sh AUTHORS
+.An Trevor Arjeski Aq Mt tmarjeski@gmail.com
