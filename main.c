@@ -73,14 +73,6 @@ void check_level(int *level, int64_t *freq, int *lines_left) {
     }
 }
 
-inline static void get_time(struct timespec *now) {
-#ifdef __ANDROID__
-    clock_gettime(CLOCK_MONOTONIC, now);
-#else
-    timespec_get(now, TIME_UTC);
-#endif
-}
-
 int main(int argc, char *argv[]) {
     bool    quit = false, can_draw_hud = true;
     int64_t tick_freq = STARTING_FREQ_SECS, ticker = 0;
@@ -103,7 +95,7 @@ int main(int argc, char *argv[]) {
         TetriminoMoveResult move_res  = MOVE_SUCCESS;
         int                 drop_rows = 0;
         struct timespec     now;
-        get_time(&now);
+        clock_gettime(CLOCK_MONOTONIC, &now);
         int64_t now_ms = now.tv_sec * INT64_C(1000) + now.tv_nsec / 1000000;
 
         if (now_ms - ticker >= tick_freq) {

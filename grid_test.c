@@ -4,7 +4,7 @@
 
 #include <check.h>
 
-#include "../include/dotris.h"
+#include "dotris.h"
 
 START_TEST(test_char_to_dots) {
     DotChar a;
