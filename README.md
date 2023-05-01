@@ -13,8 +13,7 @@ Mini Tetris made with dots
 - [Troubleshooting](#troubleshooting)
 - [Installing](#installing)
 - [Building](#building)
-    - [GCC](#gcc)
-    - [Meson](#meson)
+    - [GCC/Clang](#gccclang)
     - [GNU Make](#gnu-make)
 
 ## How To Play
@@ -82,7 +81,7 @@ Currently only available through the [AUR](https://aur.archlinux.org/packages/do
 git clone https://github.com/trevarj/dotris && cd dotris
 ```
 
-### GCC / Clang
+### GCC/Clang
 ```
 $(CC) -lncursesw -Iinclude/ src/main.c src/tetriminos.c src/grid.c -o dotris
 ```
