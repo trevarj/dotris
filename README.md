@@ -60,15 +60,15 @@ Every 10 lines cleared the speed of the falling piece increases by 40% and the g
 ## Troubleshooting
 
 If the pieces are not rendering correctly (weird spacing between dots), you will probably
-need to install another font that has 
+need to install another font that has custom
 [Braille pattern](https://en.wikipedia.org/wiki/Braille_Patterns) characters.
 
-Some fonts that have perfect characters for Tetris pieces: 
+Some fonts that have decent characters for Tetris pieces: 
 [Terminus](https://files.ax86.net/terminus-ttf/), 
 [Cozette](https://github.com/slavfox/Cozette), 
 [Spleen](https://www.cambus.net/spleen-monospaced-bitmap-fonts/)
 
-If you use Kitty terminal emulator (recommended), these characters will be
+If you use Kitty terminal emulator, these characters will be
 [rendered programmatically](https://github.com/kovidgoyal/kitty/discussions/6152), not
 using the configured font.
 
@@ -82,19 +82,9 @@ Currently only available through the [AUR](https://aur.archlinux.org/packages/do
 git clone https://github.com/trevarj/dotris && cd dotris
 ```
 
-### GCC
+### GCC / Clang
 ```
-gcc -lncursesw -Iinclude/ src/main.c src/tetriminos.c src/grid.c -o dotris
-```
-
-### Meson
-```
-meson setup ./build . --buildtype=release
-cd build
-meson compile
-
-# (optional)
-sudo meson install
+$(CC) -lncursesw -Iinclude/ src/main.c src/tetriminos.c src/grid.c -o dotris
 ```
 
 ### GNU Make
@@ -110,3 +100,10 @@ Now you can run the `dotris` binary
 ./dotris
 ```
 
+### Development
+
+Generating clangd metadata with `bear`:
+
+```
+bear -- make
+```

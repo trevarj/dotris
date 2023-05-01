@@ -1,7 +1,5 @@
-.cache/
-build/
 out/
-*.o
 dotris
 dotris.6.gz
 test
+compile_commands.json
