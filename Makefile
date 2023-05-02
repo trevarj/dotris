@@ -1,10 +1,10 @@
 .POSIX:
 .SUFFIXES:
 
+CC       := cc
 CFLAGS   := -std=c99 -D_POSIX_C_SOURCE=199309L -Wall -Wextra -Wpedantic -O2
 # Debug Mode
 # CFLAGS += -Og -ggdb -fsanitize=address,undefined -DDEBUG -Werror
-CPPFLAGS := -Iinclude
 LDFLAGS  := `pkg-config --libs ncursesw`
 
 PREFIX := /usr/local
@@ -24,9 +24,10 @@ dotris: $(OBJECTS)
 
 .SUFFIXES: .c .o
 .c.o: $(OUT_DIR)
-	$(CC) $(CFLAGS) $(CPPFLAGS) -c $<
+	$(CC) $(CFLAGS) -c $<
 
-test: CFLAGS += -lcheck
+test: CFLAGS += `pkg-config --cflags check`
+test: LDFLAGS += `pkg-config --libs check`
 test: $(TEST_OBJECTS)
 	$(CC) $(CFLAGS) -o $@ $? $(LDFLAGS)
 	./test
