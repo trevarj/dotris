@@ -23,7 +23,7 @@ dotris: $(OBJECTS)
 	$(CC) $(CFLAGS) -o $@ $? $(LDFLAGS)
 
 .SUFFIXES: .c .o
-.c.o: $(OUT_DIR)
+.c.o:
 	$(CC) $(CFLAGS) -c $<
 
 test: CFLAGS += `pkg-config --cflags check`
