@@ -26,7 +26,6 @@ dotris: $(OBJECTS)
 .c.o:
 	$(CC) $(CFLAGS) -c $<
 
-test: CFLAGS += `pkg-config --cflags check`
 test: LDFLAGS += `pkg-config --libs check`
 test: $(TEST_OBJECTS)
 	$(CC) $(CFLAGS) -o $@ $? $(LDFLAGS)
