@@ -20,7 +20,7 @@ all: dotris
 .PHONY: test clean install install-man
 
 dotris: $(OBJECTS)
-	$(CC) $(CFLAGS) -o $@ $? $(LDFLAGS)
+	$(CC) $(CFLAGS) -o $@ $(OBJECTS) $(LDFLAGS)
 
 .SUFFIXES: .c .o
 .c.o:
