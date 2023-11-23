@@ -63,14 +63,26 @@ int calculate_points(int cleared, int drop_rows, int level) {
     return points;
 }
 
-// Increase drop speed by 40% every 10 lines cleared
-void check_level(int *level, int64_t *freq, int *lines_left) {
-    if (*lines_left <= 0) {
-        *freq *= .6;
-        grid_clear_all();
-        *lines_left = LINES_PER_LEVEL;
-        (*level)++;
-    }
+void level_up(int *level, int64_t *freq) {
+    *freq *= .6;
+    (*level)++;
+}
+
+void level_down(int *level, int64_t *freq) {
+    *freq /= .6;
+    (*level)--;
+}
+
+void change_level(int direction, int *level, int64_t *freq, int *lines_left, int *score,
+                  bool can_draw_hud) {
+    if (direction)
+        level_up(level, freq);
+    else
+        level_down(level, freq);
+    *lines_left = LINES_PER_LEVEL;
+    grid_clear_all();
+    if (can_draw_hud)
+        draw_hud(*score, *level, *lines_left, LINES_PER_LEVEL);
 }
 
 int main(int argc, char *argv[]) {
@@ -134,6 +146,15 @@ int main(int argc, char *argv[]) {
                 t          = tetrimino_create_random();
             }
             break;
+        case KEY_PPAGE:
+            if (level < 100)
+                change_level(1, &level, &tick_freq, &lines_left, &score, can_draw_hud);
+            break;
+        case KEY_NPAGE:
+            if (level > 1) {
+                change_level(0, &level, &tick_freq, &lines_left, &score, can_draw_hud);
+            }
+            break;
         case KEY_Q:
             quit = true;
             break;
@@ -146,9 +167,8 @@ int main(int argc, char *argv[]) {
                 total_cleared += cleared;
                 lines_left    -= cleared;
                 score         += calculate_points(cleared, drop_rows, level);
-                check_level(&level, &tick_freq, &lines_left);
-                if (can_draw_hud)
-                    draw_hud(score, level, lines_left, LINES_PER_LEVEL);
+                if (lines_left <= 0)
+                    change_level(1, &level, &tick_freq, &lines_left, &score, can_draw_hud);
             }
             if (held_piece == RESTORED_HELD)
                 held_piece = NONE_HELD;
